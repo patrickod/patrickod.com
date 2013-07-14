@@ -1,0 +1,28 @@
+body {
+  font-family: 'Anonymous Pro', sans-serif;
+  width: 600px;
+  margin: auto;
+  margin-top: 200px;
+}
+
+h3.header {
+  font-size: 130%;
+}
+
+img.headshot {
+  float: left;
+  display: inline-block;
+  margin-right: 10px;
+  width: 180px;
+}
+
+div#footer {
+  position: absolute;
+  bottom: 0px;
+  color: #777;
+  text-align: center;
+}
+div#footer p{
+  text-align: center;
+}
+
