@@ -1,0 +1,1 @@
+/var/www/patrickodoherty.com/pages/images
