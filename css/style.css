@@ -2,22 +2,31 @@ body {
   font-family: 'Anonymous Pro', sans-serif;
   width: 600px;
   margin: auto;
-  margin-top: 200px;
+  margin-top: 15%;
 }
 
 h3.header {
+  display: inline-block;
   font-size: 130%;
+  margin-left: 190px;
+  margin-top: 0px;
+}
+div.about-me {
+  display: inline-block;
+  margin-left: 190px;
+  width: 400px;
 }
 
 img.headshot {
-  float: left;
+  position: fixed;
   display: inline-block;
   margin-right: 10px;
   width: 180px;
 }
 
 div#footer {
-  position: absolute;
+  width: 600px;
+  margin-top: 15%;
   bottom: 0px;
   color: #777;
   text-align: center;
