@@ -56,3 +56,11 @@ a.icon.tumblr {
 a.icon.flickr {
   background-image: url(/img/icon_flickr.png);
 }
+
+a.icon.intercom {
+  background-image: url(/img/icon_intercom.png);
+}
+
+a.icon.twitter {
+  background-image: url(/img/icon_twitter.png);
+}
