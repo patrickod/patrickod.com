@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title>Patrick's thoughts</title>
+  <link href="http://patrickodoherty.com/blog/atom.xml" rel="self"/>
+  <link href="http://patrickodoherty.com/blog/"/>
+  <updated>2012-04-07T16:59:37-07:00</updated>
+  <id>http://patrickodoherty.com/blog/</id>
+  <author>
+    <name>Patrick O'Doherty</name>
+    
+  </author>
+
+  
+  <entry>
+    <title>SSH in Amazon's VPC</title>
+    <link href="http://patrickodoherty.com/blog/blog/2012/04/07/ssh-in-amazons-vpc/"/>
+    <updated>2012-04-07T16:40:00-07:00</updated>
+    <id>http://patrickodoherty.com/blog/blog/2012/04/07/ssh-in-amazons-vpc</id>
+    <content type="html">&lt;p&gt;One of the more useful features offered by Amazon in their EC2 infrastructure is their Virtual Private Cloud. This allows you to host private subnets in EC2 giving greater flexibility as to organising your servers.&lt;/p&gt;
+
+&lt;p&gt;In doing this you can disallow these machines from being directly accessible from the Internet and instead host them behind a NAT instance. While this is a great security feature it can also be a pain.&lt;/p&gt;
+
+&lt;p&gt;Say for instance you want to SSH one of your database servers. Because it doesn't listen on any publicly accessible ports you'll have to route your traffic through another server. You could SSH one of your publicly accessible servers and from there SSH your private database server but that requires either keeping the credentials on a publicly accessible box (alarm bells should be sounding here) or disabling key based authentication and relying on passwords alone (again with the alarm bells).&lt;/p&gt;
+
+&lt;p&gt;There is however another solution. OpenSSH allows us to establish SOCKS proxies between the client and server which means we can use our SSH connection to a publicly available server to route our traffic to our private subnet.&lt;/p&gt;
+
+&lt;p&gt;Using this DynamicForward option along with netcat we can establish SSH connections to servers on our private through our public server.&lt;/p&gt;
+
+&lt;p&gt;The SSH config looks something like this&lt;/p&gt;
+
+&lt;div&gt;&lt;figure role=code&gt;&lt;figcaption&gt;&lt;span&gt;[SSH config] &lt;/span&gt;&lt;/figcaption&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;table cellpadding=&quot;0&quot; cellspacing=&quot;0&quot;&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre class=&quot;line-numbers&quot;&gt;&lt;span class='line'&gt;1&lt;/span&gt;
+&lt;span class='line'&gt;2&lt;/span&gt;
+&lt;span class='line'&gt;3&lt;/span&gt;
+&lt;span class='line'&gt;4&lt;/span&gt;
+&lt;span class='line'&gt;5&lt;/span&gt;
+&lt;span class='line'&gt;6&lt;/span&gt;
+&lt;span class='line'&gt;7&lt;/span&gt;
+&lt;span class='line'&gt;8&lt;/span&gt;
+&lt;/pre&gt;&lt;/td&gt;&lt;td class='code' width='100%'&gt;&lt;pre&gt;&lt;code class=''&gt;&lt;div class='line'&gt;host YOUR_PUBLIC_SERVER
+&lt;/div&gt;&lt;div class='line'&gt;    IdentityFile ~/.ssh/SUPER_SECRET_KEY
+&lt;/div&gt;&lt;div class='line'&gt;    DynamicForward 127.0.0.1:3128
+&lt;/div&gt;&lt;div class='line'&gt;
+&lt;/div&gt;&lt;div class='line'&gt;host 10.0.*.*
+&lt;/div&gt;&lt;div class='line'&gt;    user root
+&lt;/div&gt;&lt;div class='line'&gt;    IdentityFile ~/.ssh/SUPER_SECRET_KEY
+&lt;/div&gt;&lt;div class='line'&gt;    ProxyCommand /usr/bin/nc -x localhost:3128 %h %p&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;&lt;/figure&gt;&lt;/div&gt;
+
+
+&lt;p&gt;I had slight trouble getting this to work originally due to conflicting versions of netcat that I had installed. This configuration works on OS X Lion.&lt;/p&gt;
+
+&lt;p&gt;Hopefully this will be of use to people. It's been an invaluable time saver for me.&lt;/p&gt;
+</content>
+  </entry>
+  
+  <entry>
+    <title>Complying With PEP8</title>
+    <link href="http://patrickodoherty.com/blog/blog/2012/01/07/complying-with-pep8/"/>
+    <updated>2012-01-07T16:14:00-08:00</updated>
+    <id>http://patrickodoherty.com/blog/blog/2012/01/07/complying-with-pep8</id>
+    <content type="html">&lt;p&gt;One of my major resolutions this New Year is to try and write cleaner, more
+legible code. The main reason for this was to make working a little easier, to
+ensure that any ideas that flowed from my head to my editor did so in a logical
+manner. The upside is that my code should be easier for others to read and
+comprehend.&lt;/p&gt;
+
+&lt;p&gt;The first thing I looked at were the guidelines given in Guido Van Rossum's
+&lt;a href=&quot;http://www.python.org/dev/peps/pep-0008/%20PEP8&quot;&gt;PEP8&lt;/a&gt;, which details what Guido sees as the best way to present Python
+code.&lt;/p&gt;
+
+&lt;p&gt;One of the more important items contained in PEP8 is the suggestion that all
+code be limited to lines of 80 characters or less. The for this are actually
+quite logical. Many devices today are still limited to 80 character wide ouputs
+which makes reading longer lines quite unweildy. It also makes it possible to
+have numerous files open side by side without the need for horizontal scrolling.&lt;/p&gt;
+
+&lt;p&gt;The problem is it's often very hard to visually note where the magic 80th column
+is. In vim you can set &lt;code&gt;:set ruler&lt;/code&gt; which shows your current column and row in
+the bottom right of your status bar. While this is handy to know it means that
+every time you approach the magic number you'd have to check yourself to see
+where you should stop. Not at all easy.&lt;/p&gt;
+
+&lt;p&gt;And so I turned to Google to see what otherse before me had thought of this
+problem. In doing so I found a great snippet on Stack Overflow which instructs
+vim to highlight any characters over the 80 limit with a nice shade of red. This
+makes it much much easier to see where the offending lines are.&lt;/p&gt;
+
+&lt;p&gt;The result looks like this. Simple right?
+&lt;img class='' src='http://patrickodoherty.com/blog/images/highlight_80.png' width='' height='' alt='' title=''&gt;&lt;/p&gt;
+
+&lt;p&gt;The lines needed in your .vimrc are as follows&lt;/p&gt;
+
+&lt;div&gt;&lt;figure role=code&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;table cellpadding=&quot;0&quot; cellspacing=&quot;0&quot;&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre class=&quot;line-numbers&quot;&gt;&lt;span class='line'&gt;1&lt;/span&gt;
+&lt;span class='line'&gt;2&lt;/span&gt;
+&lt;/pre&gt;&lt;/td&gt;&lt;td class='code' width='100%'&gt;&lt;pre&gt;&lt;code class=''&gt;&lt;div class='line'&gt;highlight OverLength ctermbg=red ctermfg=white guibg=#FFD9D9
+&lt;/div&gt;&lt;div class='line'&gt;match OverLength /\%81v.\+/&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;&lt;/figure&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Thanks to Simon Howard for the original post to Stack Overflow which can be
+found &lt;a href=&quot;http://stackoverflow.com/a/235970/195906&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
+</content>
+  </entry>
+  
+  <entry>
+    <title>Dealing With 'Bluetooth Not Available' on Mac OS X</title>
+    <link href="http://patrickodoherty.com/blog/blog/2011/09/08/dealing-with-bluetooth-not-available-on-mac-os-x/"/>
+    <updated>2011-09-08T21:45:00-07:00</updated>
+    <id>http://patrickodoherty.com/blog/blog/2011/09/08/dealing-with-bluetooth-not-available-on-mac-os-x</id>
+    <content type="html">&lt;p&gt;So I had an interesting experience today with the Bluetooth functionality on my early 2010 13&quot; MacBook Pro where it suddenly stopped working. I don't mean the &quot;jiggle the mouse and it reconnects&quot; stop working, rather the laptop suddenly decided that the bluetooth components inside it did not exist. I tried accessing the Bluetooth preference pane to see if I could turn it on and off again but as soon as I opened System Preferences it told me that since the computer no longer had any Bluetooth hardware it would delete this freshly redundant preference pane. Useful indeed.&lt;/p&gt;
+
+&lt;p&gt;I tried resetting the PRAM and NVRAM as Googling had instructed but to no avail.&lt;/p&gt;
+
+&lt;p&gt;In the end I needed to reset the SMC by starting the laptop from cold, with the magsafe adapter plugged in, while holding down the left Shift-Option-Control keys in combination with pressing the power button. The magsafe adapter should change its light colour and then you should be able to boot with your freshly rediscovered Bluetooth functionality.&lt;/p&gt;
+</content>
+  </entry>
+  
+</feed>
