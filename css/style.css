@@ -16,6 +16,8 @@ div.about-me {
   display: inline-block;
   margin-left: 190px;
   width: 400px;
+  line-height: 20px;
+  font-size: 16px;
 }
 
 img.headshot {
@@ -36,3 +38,21 @@ div#footer p{
   text-align: center;
 }
 
+a.icon {
+  padding-right: 20px;
+  background-repeat: no-repeat;
+  background-size: 15px 15px;
+  background-position: right;
+}
+
+a.icon.github {
+  background-image: url(/img/icon_github.png);
+}
+
+a.icon.tumblr {
+  background-image: url(/img/icon_tumblr.png);
+}
+
+a.icon.flickr {
+  background-image: url(/img/icon_flickr.png);
+}
