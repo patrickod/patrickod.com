@@ -23,18 +23,21 @@ body {
 }
 
 h3.header {
-  display: inline-block;
-  font-size: 130%;
-  margin-left: 190px;
-  margin-bottom: 0px;
-  margin-top: 0px;
+  text-align: center;
+  display: block;
+  font-size: 180%;
 }
+
 div.about-me {
   display: inline-block;
   margin-left: 190px;
   width: 400px;
   line-height: 20px;
   font-size: 16px;
+}
+
+div.about-me p:first-child {
+  margin-top: 0px;
 }
 
 img.headshot {
