@@ -7,7 +7,7 @@ div#background {
   height: 100%;
   width: 100%;
   background: url(/img/background.jpg) no-repeat center center fixed;
-  opacity: 0.2;
+  opacity: 0.15;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
